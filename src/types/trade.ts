@@ -106,7 +106,11 @@ export interface SetupScoreResult {
   items: ChecklistItemStatus[];
 }
 
-export type TradeOutcome = 'win' | 'loss' | 'in_progress' | 'cancelled';
+export type TradeOutcome = 'win' | 'loss' | 'in_progress' | 'cancelled' | 'unresolved';
+
+/** Why a trade ended as `unresolved` — session ran out of future candles
+ * before the trade could fully play out. */
+export type UnresolvedReason = 'entry_not_triggered' | 'no_exit_hit';
 
 export interface TradeResult {
   outcome: TradeOutcome;
@@ -114,6 +118,7 @@ export interface TradeResult {
   exitTime: UnixTime | null;
   profitInR: number | null;
   durationSeconds: number | null;
+  unresolvedReason?: UnresolvedReason;
 }
 
 export interface PlaybackState {

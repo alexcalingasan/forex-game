@@ -43,6 +43,8 @@ export function PositionTool() {
   const position = useTradeStore((s) => s.position);
   const updatePosition = useTradeStore((s) => s.updatePosition);
   const removePosition = useTradeStore((s) => s.removePosition);
+  const executed = useTradeStore((s) => s.executed);
+  const entryTriggered = useTradeStore((s) => s.entryTriggered);
   const symbol = useSymbol();
   const [drag, setDrag] = useState<DragMode>(null);
   void version;
@@ -213,7 +215,13 @@ export function PositionTool() {
         )}
       </div>
 
-      {lineRow(entryClamp, isLong ? 'ENTRY (Long)' : 'ENTRY (Short)', position.entry, '#facc15', 'entry')}
+      {lineRow(
+        entryClamp,
+        `ENTRY (${isLong ? 'Long' : 'Short'})${executed ? (entryTriggered ? ' · Filled' : ' · Pending') : ''}`,
+        position.entry,
+        executed && !entryTriggered ? '#94a3b8' : '#facc15',
+        'entry',
+      )}
       {lineRow(slClamp, 'SL', position.stopLoss, '#ef4444', 'stopLoss')}
       {lineRow(tpClamp, 'TP', position.takeProfit, '#22c55e', 'takeProfit')}
 
